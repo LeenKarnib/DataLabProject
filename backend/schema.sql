@@ -61,15 +61,11 @@ CREATE TABLE IF NOT EXISTS completed_courses (
 -- COURSES — MATH & SCIENCE (shared across all majors)
 -- ============================================================
 INSERT IGNORE INTO courses (code, name, credits, department, offered_semesters, course_type) VALUES
-('MTH101', 'Calculus I',                         3, 'MTH', 'both', 'required'),
-('MTH102', 'Calculus II',                        3, 'MTH', 'both', 'required'),
 ('MTH201', 'Calculus III',                       3, 'MTH', 'both', 'required'),
 ('MTH206', 'Calculus IV',                        3, 'MTH', 'both', 'required'),
 ('MTH207', 'Discrete Structures I',              3, 'MTH', 'both', 'required'),
 ('MTH304', 'Differential Equations',             3, 'MTH', 'both', 'required'),
 ('GNE331', 'Probability and Statistics',         3, 'GNE', 'both', 'required'),
-('PHY101', 'General Physics I',                  3, 'PHY', 'both', 'required'),
-('PHY102', 'General Physics II',                 3, 'PHY', 'both', 'required'),
 ('PHY201', 'Electricity and Magnetism',          3, 'PHY', 'both', 'required');
 
 -- ============================================================
@@ -119,8 +115,8 @@ INSERT IGNORE INTO courses (code, name, credits, department, offered_semesters, 
 ('COE522', 'High Performance Computer Architecture', 3, 'COE', 'fall', 'elective'),
 ('COE527', 'VLSI Design',                        3, 'COE', 'spring', 'elective'),
 ('COE529', 'Testing for Digital Integrated Circuits', 3, 'COE', 'fall', 'elective'),
-('COE543', 'Intelligent Data Processing & Applications', 3, 'COE', 'both', 'elective'),
-('COE544', 'Intelligent Engineering Algorithms', 3, 'COE', 'both', 'elective'),
+('COE543', 'Large Language Models', 3, 'COE', 'both', 'elective'),
+('COE544', 'Advanced Large Language Models', 3, 'COE', 'both', 'elective'),
 ('COE545', 'Information Security',               3, 'COE', 'both', 'elective'),
 ('COE546', 'Machine Learning',                   3, 'COE', 'both', 'elective'),
 ('COE547', 'Deep Learning',                      3, 'COE', 'both', 'elective'),
@@ -279,16 +275,11 @@ INSERT IGNORE INTO major_requirements (major, course_code, requirement_type) VAL
 
 -- Math chain
 INSERT IGNORE INTO prerequisites VALUES
-('MTH102', 'MTH101'),
-('MTH201', 'MTH102'),
 ('MTH206', 'MTH201'),
 ('MTH304', 'MTH102'),
 ('MTH207', 'MTH101');
 
--- Physics
-INSERT IGNORE INTO prerequisites VALUES
-('PHY102', 'PHY101'),
-('PHY201', 'PHY102');
+
 
 -- COE chain
 INSERT IGNORE INTO prerequisites VALUES
@@ -318,7 +309,7 @@ INSERT IGNORE INTO prerequisites VALUES
 ('COE543', 'COE312'),
 ('COE544', 'COE312'),
 ('COE545', 'COE431'),
-('COE546', 'COE312'),
+('COE546', 'GNE331'),
 ('COE547', 'COE546'),
 ('COE554', 'COE546');
 
