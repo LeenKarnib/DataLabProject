@@ -182,7 +182,7 @@ function LoginForm() {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -255,7 +255,7 @@ function RegisterForm() {
       return;
     }
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, major, password }),
@@ -301,9 +301,9 @@ function RegisterForm() {
         onChange={(e) => setMajor(e.target.value)}
       >
         <option value="">Select your major</option>
-        <option value="CE">Computer Engineering</option>
-        <option value="EE">Electrical Engineering</option>
-        <option value="CS">Computer Science</option>
+        <option value="COE">Computer Engineering</option>
+        <option value="ELE">Electrical Engineering</option>
+        <option value="MCE">Mechatronics Engineering</option>
       </select>
 
       <label style={styles.label}>Password</label>
