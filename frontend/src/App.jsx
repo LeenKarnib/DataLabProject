@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import Navbar from './components/Navbar';
 import CatalogPage from './pages/CatalogPage';
 import PlannerPage from './pages/PlannerPage';
 import GraphPage from './pages/GraphPage';
@@ -11,6 +12,7 @@ function App() {
 
   return (
     <Router>
+      {token && <Navbar />} 
       <Routes>
         <Route path="/" element={<Navigate to={token ? "/catalog" : "/login"} />} />
         <Route path="/login" element={<LoginPage />} />
