@@ -57,6 +57,52 @@ router.get("/dept/:dept", (req, res) => {
 });
 
 // ─────────────────────────────────────────
+// GET /api/courses/major/:major/graph
+// Returns all courses for a major + their prereq edges
+// Used by the React Flow graph visualization
+// ─────────────────────────────────────────
+router.get("/major/:major/graph", async (req, res) => {
+  const major = req.params.major.toUpperCase();
+
+  if (!["COE", "ELE", "MCE"].includes(major)) {
+    return res.status(400).json({ message: "Invalid major. Use COE, ELE, or MCE." });
+  }
+
+  try {
+    // All courses required for this major
+    const [courses] = await db.query(
+      `SELECT mr.course_code AS code, c.name, c.credits, c.department,
+              c.year_standing, mr.requirement_type
+       FROM major_requirements mr
+       JOIN courses c ON mr.course_code = c.code
+       WHERE mr.major = ?`,
+      [major]
+    );
+
+    // Build a set of valid codes so we only draw edges within the major
+    const codeSet = new HashSet();
+    courses.forEach((c) => codeSet.add(c.code));
+
+    // All prereq relationships where both ends are in this major's course list
+    const [prereqs] = await db.query(
+      `SELECT p.course_code AS target, p.prereq_code AS source
+       FROM prerequisites p
+       WHERE p.course_code IN (
+         SELECT course_code FROM major_requirements WHERE major = ?
+       )`,
+      [major]
+    );
+
+    // Filter edges: only include if the source course is also in this major
+    const edges = prereqs.filter((e) => codeSet.has(e.source));
+
+    res.json({ courses, edges });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+// ─────────────────────────────────────────
 // GET /api/courses/major/:major
 // Returns all required courses for a major (COE, ELE, MCE)
 // Uses major_requirements table
@@ -150,6 +196,7 @@ router.get("/major/:major/remaining", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 // ─────────────────────────────────────────
 // GET /api/courses/major/:major/progress
