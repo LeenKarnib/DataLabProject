@@ -190,6 +190,7 @@ function LoginForm() {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("major", data.user.major);
         window.location.href = "/planner";
       } else {
         alert(data.message || "Login failed");
@@ -263,6 +264,7 @@ function RegisterForm() {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("major", data.user.major);
         window.location.href = "/planner";
       } else {
         alert(data.message || "Registration failed");
