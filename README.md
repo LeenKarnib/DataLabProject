@@ -14,9 +14,9 @@ A full-stack web app that helps LAU Computer Engineering, Electrical Engineering
 | Course Prerequisite Graph | Directed Graph (adjacency list) | DFS traversal |
 | BFS Semester Plan Generator | Graph + Queue | BFS level-order |
 | Cycle Detection | Graph | DFS with visited tracking |
-| Course Catalog Search | HashMap (hand-rolled) | O(1) lookup by course code |
-| Completed Course Tracking | HashSet (hand-rolled) | O(1) membership check |
-| Drag-and-Drop Custom Planner | — | Client-side validation |
+| Course Catalog Search | HashMap | O(1) lookup by course code |
+| Completed Course Tracking | HashSet | O(1) membership check |
+| Drag-and-Drop Custom Planner | Graph's Data | Client-side validation |
 
 ---
 
