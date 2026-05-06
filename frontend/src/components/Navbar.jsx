@@ -20,6 +20,15 @@ const NAV_LINKS = [
     ),
   },
   {
+    to: '/planner/custom',
+    label: 'My Plan',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      </svg>
+    ),
+  },
+  {
     to: '/graph',
     label: 'Graph',
     icon: (
@@ -65,6 +74,7 @@ export default function Navbar() {
           <li key={to}>
             <NavLink
               to={to}
+              end={to === '/planner'} // prevent /planner matching /planner/custom
               style={({ isActive }) => ({
                 ...styles.link,
                 ...(isActive ? styles.linkActive : {}),
@@ -72,8 +82,7 @@ export default function Navbar() {
             >
               <span style={styles.linkIcon}>{icon}</span>
               <span>{label}</span>
-              {/* Active underline bar */}
-              <NavLink to={to}>
+              <NavLink to={to} end={to === '/planner'}>
                 {({ isActive }) =>
                   isActive ? <span style={styles.activeBar} /> : null
                 }
@@ -110,91 +119,41 @@ const styles = {
     zIndex: 100,
     fontFamily: "'Geist', 'DM Sans', sans-serif",
   },
-
-  // Brand
   brand: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    textDecoration: 'none',
-    userSelect: 'none',
+    display: 'flex', alignItems: 'center', gap: '8px',
+    textDecoration: 'none', userSelect: 'none',
   },
-  brandIcon: {
-    fontSize: '20px',
-    color: '#f0c040',
-    lineHeight: 1,
-  },
-  brandText: {
-    fontSize: '17px',
-    fontWeight: '700',
-    color: '#ffffff',
-    letterSpacing: '-0.3px',
-  },
+  brandIcon: { fontSize: '20px', color: '#f0c040', lineHeight: 1 },
+  brandText: { fontSize: '17px', fontWeight: '700', color: '#ffffff', letterSpacing: '-0.3px' },
   brandSub: {
-    fontSize: '11px',
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.5)',
-    letterSpacing: '1.5px',
-    textTransform: 'uppercase',
-    marginLeft: '2px',
-    paddingTop: '2px',
+    fontSize: '11px', fontWeight: '600', color: 'rgba(255,255,255,0.5)',
+    letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '2px', paddingTop: '2px',
   },
-
-  // Links
   links: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
+    display: 'flex', alignItems: 'center', gap: '4px',
+    listStyle: 'none', margin: 0, padding: 0,
   },
   link: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '7px',
-    padding: '6px 14px',
-    borderRadius: '6px',
-    fontSize: '14px',
-    fontWeight: '500',
+    display: 'flex', alignItems: 'center', gap: '7px',
+    padding: '6px 14px', borderRadius: '6px',
+    fontSize: '14px', fontWeight: '500',
     color: 'rgba(255,255,255,0.75)',
     textDecoration: 'none',
     transition: 'background 0.15s, color 0.15s',
-    position: 'relative',
-    cursor: 'pointer',
+    position: 'relative', cursor: 'pointer',
   },
-  linkActive: {
-    color: '#ffffff',
-    backgroundColor: 'rgba(255,255,255,0.14)',
-  },
-  linkIcon: {
-    opacity: 0.85,
-    display: 'flex',
-    alignItems: 'center',
-  },
+  linkActive: { color: '#ffffff', backgroundColor: 'rgba(255,255,255,0.14)' },
+  linkIcon: { opacity: 0.85, display: 'flex', alignItems: 'center' },
   activeBar: {
-    position: 'absolute',
-    bottom: '-1px',
-    left: '14px',
-    right: '14px',
-    height: '2px',
-    backgroundColor: '#f0c040',
-    borderRadius: '2px 2px 0 0',
+    position: 'absolute', bottom: '-1px', left: '14px', right: '14px',
+    height: '2px', backgroundColor: '#f0c040', borderRadius: '2px 2px 0 0',
   },
-
-  // Logout
   logout: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '7px',
-    padding: '6px 14px',
-    borderRadius: '6px',
-    fontSize: '13.5px',
-    fontWeight: '500',
+    display: 'flex', alignItems: 'center', gap: '7px',
+    padding: '6px 14px', borderRadius: '6px',
+    fontSize: '13.5px', fontWeight: '500',
     color: 'rgba(255,255,255,0.65)',
-    background: 'transparent',
-    border: '1px solid rgba(255,255,255,0.2)',
-    cursor: 'pointer',
-    transition: 'background 0.15s, color 0.15s, border-color 0.15s',
+    background: 'transparent', border: '1px solid rgba(255,255,255,0.2)',
+    cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
   },
 };

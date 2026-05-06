@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import Navbar from './components/Navbar';
 import CatalogPage from './pages/CatalogPage';
 import PlannerPage from './pages/PlannerPage';
+import CustomPlannerPage from './pages/CustomPlannerPage';
 import GraphPage from './pages/GraphPage';
 import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -12,16 +13,17 @@ function App() {
 
   return (
     <Router>
-      {token && <Navbar />} 
+      {token && <Navbar />}
       <Routes>
         <Route path="/" element={<Navigate to={token ? "/catalog" : "/login"} />} />
         <Route path="/login" element={<LoginPage />} />
-        
-        <Route path="/catalog" element={<ProtectedRoute><CatalogPage /></ProtectedRoute>} />
-        <Route path="/planner" element={<ProtectedRoute><PlannerPage /></ProtectedRoute>} />
-        <Route path="/graph" element={<ProtectedRoute><GraphPage /></ProtectedRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-        
+
+        <Route path="/catalog"         element={<ProtectedRoute><CatalogPage /></ProtectedRoute>} />
+        <Route path="/planner"         element={<ProtectedRoute><PlannerPage /></ProtectedRoute>} />
+        <Route path="/planner/custom"  element={<ProtectedRoute><CustomPlannerPage /></ProtectedRoute>} />
+        <Route path="/graph"           element={<ProtectedRoute><GraphPage /></ProtectedRoute>} />
+        <Route path="/dashboard"       element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+
         <Route path="*" element={<Navigate to={token ? "/catalog" : "/login"} />} />
       </Routes>
     </Router>

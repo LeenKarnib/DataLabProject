@@ -13,7 +13,9 @@ const authRoutes = require("./src/routes/auth");
 const courseRoutes = require("./src/routes/courses");
 const plannerRoutes = require("./src/routes/planner");
 const completedRoutes = require("./src/routes/completedRoutes");
+const customPlanner = require("./src/routes/customPlanner");
 
+app.use("/api/planner", customPlanner);
 app.use("/api/auth", authRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/planner", plannerRoutes);
