@@ -58,14 +58,26 @@ CREATE TABLE completed_courses (
   FOREIGN KEY (course_code) REFERENCES courses(code)
 );
 
+CREATE TABLE IF NOT EXISTS user_plans (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  user_id       INT          NOT NULL,
+  major         VARCHAR(10)  NOT NULL,
+  course_code   VARCHAR(20)  NOT NULL,
+  semester_label VARCHAR(20) NOT NULL,
+  created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_user_course (user_id, course_code),
+  FOREIGN KEY (user_id)     REFERENCES users(id)    ON DELETE CASCADE,
+  FOREIGN KEY (course_code) REFERENCES courses(code) ON DELETE CASCADE
+);
+
 -- ============================================================
 -- COURSES — ENGLISH & LAS
 -- ============================================================
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
-('ENG101',  'English I',                          3, 'ENG',  'both',   'required', 1),
-('ENG102',  'English II',                         3, 'ENG',  'both',   'required', 1),
-('ENG202',  'Advanced Academic English',          3, 'ENG',  'both',   'required', 2),
-('COM203',  'Art of Public Communication',        3, 'COM',  'summer',   'required', 2),
+-- ('ENG101',  'English I',                          3, 'ENG',  'both',   'required', 1),
+-- ('ENG102',  'English II',                         3, 'ENG',  'both',   'required', 1),
+('ENG202',  'Advanced Academic English',          3, 'ENG',  'fall',   'required', 1),
+('COM203',  'Art of Public Communication',        3, 'COM',  'summer',   'required', 1),
 ('LAS001',  'Liberal Arts & Sciences Elective 1', 3, 'LAS',  'spring',   'elective', 1),
 ('LAS002',  'Liberal Arts & Sciences Elective 2', 3, 'LAS',  'spring',   'elective', 1),
 ('LAS003',  'Liberal Arts & Sciences Elective 3', 3, 'LAS',  'summer',   'elective', 1),
@@ -91,45 +103,45 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 ('GNE212', 'Engineering Mechanics',            3, 'GNE', 'both',   'required', 1),
 ('GNE301', 'Professional Communication',       2, 'GNE', 'summer',   'required', 2),
 ('GNE303', 'Engineering Ethics',               2, 'GNE', 'summer',   'required', 2),
-('GNE000', 'SOE Signature Course',             3, 'GNE', 'both',   'required', 4),
+('GNE000', 'SOE Signature Course',             3, 'GNE', 'spring',   'required', 4),
 ('INE320', 'Engineering Economy',              3, 'INE', 'summer',   'required', 2);
 
 -- ============================================================
 -- COURSES — COE CORE
 -- ============================================================
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
-('COE211',  'Computer Programming',            4, 'COE', 'spring',   'required', 1),
-('COE312',  'Data Structures',                 3, 'COE', 'fall',   'required', 1),
-('COE313',  'Data Structures Lab',             1, 'COE', 'spring', 'lab',      1),
-('COE321',  'Logic Design',                    3, 'COE', 'fall',   'required', 1),
-('COE322',  'Logic Design Lab',                1, 'COE', 'spring', 'lab',      1),
-('COE323',  'Microprocessors',                 3, 'COE', 'spring', 'required', 1),
-('COE324',  'Microprocessors Lab',             1, 'COE', 'fall',   'lab',      2),
-('COE414',  'Operating Systems',               3, 'COE', 'fall',   'required', 2),
+('COE211',  'Computer Programming',            3, 'COE', 'spring',   'required', 1),
+('COE312',  'Data Structures',                 3, 'COE', 'fall',   'required', 2),
+('COE313',  'Data Structures Lab',             1, 'COE', 'spring', 'lab',      2),
+('COE321',  'Logic Design',                    3, 'COE', 'fall',   'required', 2),
+('COE322',  'Logic Design Lab',                1, 'COE', 'spring', 'lab',      2),
+('COE323',  'Microprocessors',                 3, 'COE', 'spring', 'required', 2),
+('COE324',  'Microprocessors Lab',             1, 'COE', 'fall',   'lab',      3),
+('COE414',  'Operating Systems',               3, 'COE', 'fall',   'required', 4),
 ('COE415',  'Computer Programming II',         3, 'COE', 'spring', 'required', 2),
 ('COE415B', 'Computer Programming II Lab',     1, 'COE', 'fall',   'lab',      3),
 ('COE416',  'Software Engineering',            3, 'COE', 'spring', 'required', 3),
-('COE418',  'Database Systems',                3, 'COE', 'fall',   'required', 2),
+('COE418',  'Database Systems',                3, 'COE', 'fall',   'required', 3),
 ('COE423',  'Computer Architecture',           3, 'COE', 'fall',   'required', 2),
 ('COE424',  'Digital Systems',                 3, 'COE', 'spring', 'required', 3),
-('COE425',  'Digital Systems Lab',             1, 'COE', 'fall',   'lab',      3),
+('COE425',  'Digital Systems Lab',             1, 'COE', 'fall',   'lab',      4),
 ('COE431',  'Computer Networks',               3, 'COE', 'spring', 'required', 4),
 ('COE493',  'Professionalism in Engineering',  3, 'COE', 'fall',   'required', 3),
-('COE498',  'Professional Experience',         6, 'COE', 'summer', 'required', 5),
-('COE521',  'Embedded Systems',                3, 'COE', 'fall',   'required', 3),
+('COE498',  'Professional Experience',         6, 'COE', 'summer', 'required', 3),
+('COE521',  'Embedded Systems',                3, 'COE', 'fall',   'required', 4),
 ('COE593',  'COE Application',                 3, 'COE', 'fall',   'required', 4),
-('COE595',  'Capstone Design Project I',       3, 'COE', 'fall',   'required', 5),
-('COE596',  'Capstone Design Project II',      3, 'COE', 'spring', 'required', 5);
+('COE595',  'Capstone Design Project I',       3, 'COE', 'fall',   'required', 4),
+('COE596',  'Capstone Design Project II',      3, 'COE', 'spring', 'required', 4);
 
 -- COE courses needed from ELE dept
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
-('ELE300',  'Electric Circuits',               3, 'ELE', 'fall',   'required', 1),
-('ELE303',  'Electrical Circuits Lab',         1, 'ELE', 'fall',   'lab',      1),
+('ELE300',  'Electric Circuits',               3, 'ELE', 'fall',   'required', 2),
+('ELE303',  'Electrical Circuits Lab',         1, 'ELE', 'fall',   'lab',      2),
 ('ELE401',  'Electronics I',                   3, 'ELE', 'spring', 'required', 2),
 ('ELE402',  'Electronics I Lab',               1, 'ELE', 'spring', 'lab',      2),
 ('ELE430',  'Signals and Systems',             3, 'ELE', 'spring', 'required', 2),
-('ELE442',  'Control Systems',                 3, 'ELE', 'fall',   'required', 3),
-('ELE443',  'Control Systems Lab',             1, 'ELE', 'fall',   'lab',      3),
+('ELE442',  'Control Systems',                 3, 'ELE', 'fall',   'required', 4),
+('ELE443',  'Control Systems Lab',             1, 'ELE', 'fall',   'lab',      4),
 ('ELE537',  'Communication Systems',           3, 'ELE', 'fall',   'required', 3),
 ('ELE540',  'Communication Systems Lab',       1, 'ELE', 'spring', 'lab',      3);
 
@@ -138,10 +150,11 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 -- ============================================================
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
 ('COE_TE1', 'COE Technical Elective 1', 3, 'COE', 'both', 'elective', 3),
-('COE_TE2', 'COE Technical Elective 2', 3, 'COE', 'both', 'elective', 3),
-('COE_TE3', 'COE Technical Elective 3', 3, 'COE', 'both', 'elective', 4),
-('COE_TE4', 'COE Technical Elective 4', 3, 'COE', 'both', 'elective', 4);
-
+('COE_TE2', 'COE Technical Elective 2', 3, 'COE', 'spring', 'elective', 3),
+('COE_TE3', 'COE Technical Elective 3', 3, 'COE', 'spring', 'elective', 3),
+('COE_TE4', 'COE Technical Elective 4', 3, 'COE', 'spring', 'elective', 3),
+('ECE_TE5', 'ECE Technical Elective 5', 3, 'COE', 'spring', 'elective', 4),
+('ECE_TE6', 'ECE Technical Elective 6', 3, 'COE', 'spring', 'elective', 4);
 -- ============================================================
 -- MAJOR REQUIREMENTS — COE (150 credits)
 -- core: 79  math_science: 18  other_eng: 14  las: 24  elective: 15
@@ -195,8 +208,6 @@ INSERT INTO major_requirements (major, course_code, requirement_type) VALUES
 ('COE', 'GNE000',  'other_eng'),
 ('COE', 'INE320',  'other_eng'),
 -- LAS
-('COE', 'ENG101',  'las'),
-('COE', 'ENG102',  'las'),
 ('COE', 'ENG202',  'las'),
 ('COE', 'COM203',  'las'),
 ('COE', 'LAS001',  'las'),
@@ -208,17 +219,16 @@ INSERT INTO major_requirements (major, course_code, requirement_type) VALUES
 ('COE', 'COE_TE1', 'elective'),
 ('COE', 'COE_TE2', 'elective'),
 ('COE', 'COE_TE3', 'elective'),
-('COE', 'COE_TE4', 'elective');
-
+('COE', 'COE_TE4', 'elective'),
+('COE', 'ECE_TE5', 'elective'),
+('COE', 'ECE_TE6', 'elective');
 -- ============================================================
 -- PREREQUISITES
 -- ============================================================
 
 -- English chain
 INSERT INTO prerequisites VALUES
-('ENG102', 'ENG101'),
-('ENG202', 'ENG102'),
-('COM203', 'ENG102');
+('COM203', 'ENG202');
 
 -- Math chain
 INSERT INTO prerequisites VALUES
@@ -254,9 +264,9 @@ INSERT INTO prerequisites VALUES
 INSERT INTO prerequisites VALUES
 ('ELE300',  'PHY201'),
 ('ELE300',  'MTH304'),
-('ELE303',  'ELE300'),
+-- ('ELE303',  'ELE300'),
 ('ELE401',  'ELE300'),
-('ELE402',  'ELE401'),
+-- ('ELE402',  'ELE401'),
 ('ELE402',  'ELE303'),
 ('ELE430',  'ELE300'),
 ('ELE430',  'MTH206'),
@@ -265,6 +275,7 @@ INSERT INTO prerequisites VALUES
 ('ELE537',  'ELE430'),
 ('ELE537',  'GNE331'),
 ('ELE540',  'ELE537');
+
 
 -- ============================================================
 -- VERIFY
