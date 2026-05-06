@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const NAV_LINKS = [
   {
@@ -50,15 +50,8 @@ const NAV_LINKS = [
   },
 ];
 
-export default function Navbar() {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('major');
-    navigate('/login');
-  };
-
+// onLogout is passed from App.jsx — it clears localStorage + sets token to null
+export default function Navbar({ onLogout }) {
   return (
     <nav style={styles.nav}>
       {/* Brand */}
@@ -74,7 +67,7 @@ export default function Navbar() {
           <li key={to}>
             <NavLink
               to={to}
-              end={to === '/planner'} // prevent /planner matching /planner/custom
+              end={to === '/planner'}
               style={({ isActive }) => ({
                 ...styles.link,
                 ...(isActive ? styles.linkActive : {}),
@@ -92,8 +85,8 @@ export default function Navbar() {
         ))}
       </ul>
 
-      {/* Logout */}
-      <button onClick={handleLogout} style={styles.logout}>
+      {/* Logout — calls App's handleLogout */}
+      <button onClick={onLogout} style={styles.logout}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
           <polyline points="16 17 21 12 16 7"/>

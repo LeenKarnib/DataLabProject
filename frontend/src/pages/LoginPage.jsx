@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LAU_GREEN = "#1a6b3c";
 const LAU_GREEN_DARK = "#145430";
@@ -176,11 +177,19 @@ function LogoIcon() {
   );
 }
 
-function LoginForm() {
+// ─── Login Form ──────────────────────────────────────────────────────────────
+function LoginForm({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Please enter your email and password.");
+      return;
+    }
+    setLoading(true);
     try {
       const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
@@ -191,13 +200,20 @@ function LoginForm() {
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("major", data.user.major);
-        window.location.href = "/planner";
+        onLogin(data.token); // update App state → triggers re-render
+        navigate("/planner"); // React Router navigation, no hard reload
       } else {
         alert(data.message || "Login failed");
       }
     } catch (err) {
       alert("Server error. Please try again.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleLogin();
   };
 
   return (
@@ -211,6 +227,7 @@ function LoginForm() {
         placeholder="firstname.lastname@lau.edu.lb"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
       <label style={styles.label}>Password</label>
@@ -220,41 +237,40 @@ function LoginForm() {
         placeholder="••••••••"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
       <div style={styles.forgotRow}>
         <a href="/forgot-password" style={styles.forgotLink}>Forgot password?</a>
       </div>
 
-      <button style={styles.submitBtn} onClick={handleLogin}>
-        Sign in
+      <button
+        style={{ ...styles.submitBtn, opacity: loading ? 0.7 : 1 }}
+        onClick={handleLogin}
+        disabled={loading}
+      >
+        {loading ? "Signing in..." : "Sign in"}
       </button>
 
-      <div style={styles.divider}>
-        <span style={{ flex: 1, height: "0.5px", background: "#ddd" }} />
-        or
-        <span style={{ flex: 1, height: "0.5px", background: "#ddd" }} />
-      </div>
-
-      <button style={styles.socialBtn}>
-        <GoogleIcon />
-        Continue with Google (LAU SSO)
-      </button>
     </>
   );
 }
 
-function RegisterForm() {
+// ─── Register Form ───────────────────────────────────────────────────────────
+function RegisterForm({ onLogin }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [major, setMajor] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
     if (!name || !email || !major || !password) {
       alert("Please fill in all fields.");
       return;
     }
+    setLoading(true);
     try {
       const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
@@ -265,12 +281,15 @@ function RegisterForm() {
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("major", data.user.major);
-        window.location.href = "/planner";
+        onLogin(data.token); // update App state → triggers re-render
+        navigate("/planner"); // React Router navigation, no hard reload
       } else {
         alert(data.message || "Registration failed");
       }
     } catch (err) {
       alert("Server error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -282,7 +301,7 @@ function RegisterForm() {
       <input
         style={styles.input}
         type="text"
-        placeholder="e.g. Ahmad Khalil"
+        placeholder="Fistname Lastname"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
@@ -317,8 +336,12 @@ function RegisterForm() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button style={styles.submitBtn} onClick={handleRegister}>
-        Create account
+      <button
+        style={{ ...styles.submitBtn, opacity: loading ? 0.7 : 1 }}
+        onClick={handleRegister}
+        disabled={loading}
+      >
+        {loading ? "Creating account..." : "Create account"}
       </button>
 
       <p style={styles.policyText}>
@@ -328,7 +351,8 @@ function RegisterForm() {
   );
 }
 
-export default function LoginPage() {
+// ─── Main Page ───────────────────────────────────────────────────────────────
+export default function LoginPage({ onLogin }) {
   const [tab, setTab] = useState("login");
 
   return (
@@ -356,7 +380,10 @@ export default function LoginPage() {
           </div>
 
           <div style={styles.body}>
-            {tab === "login" ? <LoginForm /> : <RegisterForm />}
+            {tab === "login"
+              ? <LoginForm onLogin={onLogin} />
+              : <RegisterForm onLogin={onLogin} />
+            }
           </div>
         </div>
 
