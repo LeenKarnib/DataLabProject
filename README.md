@@ -1,7 +1,5 @@
 # DegreeMap 🎓
 
-> **Lebanese American University (LAU) — Beirut Campus**  
-> Data Structures Course Project
 
 A full-stack web app that helps LAU Computer Engineering, Electrical Engineering, and Mechatronics Engineering students plan their entire degree, from freshman year to graduation. The app enforces prerequisite rules, warns about conflicts, and recommends a valid course order, all powered by data structures built from scratch.
 
