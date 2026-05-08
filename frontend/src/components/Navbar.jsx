@@ -48,6 +48,19 @@ const NAV_LINKS = [
       </svg>
     ),
   },
+  {
+  to: '/priority-dashboard',
+  label: 'Priority Dashboard',
+  icon: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 19V5" />
+      <path d="M4 19H20" />
+      <path d="M8 16V10" />
+      <path d="M12 16V7" />
+      <path d="M16 16V13" />
+    </svg>
+  ),
+  },
 ];
 
 // onLogout is passed from App.jsx — it clears localStorage + sets token to null
