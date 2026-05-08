@@ -1,7 +1,3 @@
-// client/src/components/PrereqGraph.jsx
-// Prerequisite graph visualization using React Flow.
-// Receives { courses, edges, completedSet } as props from GraphPage.
-
 import React, { useMemo, useCallback, useState } from "react";
 import ReactFlow, {
   Background,
@@ -14,7 +10,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-// ─── Department → color mapping (matches PlannerPage legend) ───────────────
+
 const DEPT_COLORS = {
   COE: { bg: "#0f2d1c", border: "#1a6b3c", text: "#4ade80", glow: "#1a6b3c" },
   ELE: { bg: "#0d1a33", border: "#1a3a7a", text: "#60a5fa", glow: "#1a3a7a" },
@@ -33,7 +29,7 @@ function getDeptColor(code) {
   return DEPT_COLORS[dept] || DEPT_COLORS.DEFAULT;
 }
 
-// ─── Custom node ────────────────────────────────────────────────────────────
+
 function CourseNode({ data }) {
   const { code, name, credits, completed, year_standing, highlighted, dimmed } = data;
   const colors = getDeptColor(code);
@@ -143,7 +139,7 @@ function CourseNode({ data }) {
 
 const nodeTypes = { courseNode: CourseNode };
 
-// ─── Layout: bucket by year_standing, then space evenly ────────────────────
+
 function computeLayout(courses) {
   // Group by year_standing
   const byYear = {};
@@ -177,7 +173,7 @@ function computeLayout(courses) {
   return positions;
 }
 
-// ─── Main component ──────────────────────────────────────────────────────────
+
 export default function PrereqGraph({ courses, edges, completedSet }) {
   const [selectedNode, setSelectedNode] = useState(null);
 

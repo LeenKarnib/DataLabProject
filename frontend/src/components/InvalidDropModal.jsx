@@ -1,11 +1,8 @@
-// client/src/components/InvalidDropModal.jsx
-// Modal shown when a course is dropped in an invalid semester.
-// Props: { course, targetLabel, reasons, onClose }
 
 import React, { useEffect } from "react";
 
 export default function InvalidDropModal({ course, targetLabel, reasons, onClose }) {
-  // Close on Escape
+
   useEffect(() => {
     const handler = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handler);
@@ -17,7 +14,7 @@ export default function InvalidDropModal({ course, targetLabel, reasons, onClose
   const dept = course.department || course.code?.match(/^[A-Z]+/)?.[0] || "";
 
   return (
-    // Backdrop
+
     <div
       onClick={onClose}
       style={{

@@ -1,4 +1,3 @@
-// backend/src/routes/planner.js
 
 const express = require("express");
 const router = express.Router();
@@ -7,29 +6,6 @@ const Graph = require("../datastructures/Graph");
 const BFSPlanner = require("../datastructures/BFSPlanner");
 const authMiddleware = require("../middleware/auth");
 
-/**
- * GET /api/planner/:major
- *
- * Returns a BFS-generated semester plan for the authenticated user.
- * Uses their major's required courses and their completed courses.
- *
- * Response:
- * {
- *   major: "COE",
- *   totalSemesters: 8,
- *   totalCreditsRemaining: 87,
- *   semesters: [
- *     {
- *       semesterNumber: 1,
- *       totalCredits: 16,
- *       courseCount: 5,
- *       courses: [{ code, name, credits, course_type, department }, ...]
- *     },
- *     ...
- *   ],
- *   unplaced: []   // courses BFS couldn't schedule (should be empty in normal flow)
- * }
- */
 router.get("/:major", authMiddleware, async (req, res) => {
   const { major } = req.params;
 
@@ -99,12 +75,6 @@ router.get("/:major", authMiddleware, async (req, res) => {
   }
 });
 
-/**
- * GET /api/planner/:major/raw
- *
- * Same as above but returns flat arrays of course codes per semester.
- * Useful for debugging or lightweight clients.
- */
 router.get("/:major/raw", authMiddleware, async (req, res) => {
   const { major } = req.params;
   const userId = req.user.id;

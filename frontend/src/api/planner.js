@@ -1,13 +1,10 @@
-// client/src/api/planner.js
+
 
 import { getToken } from "../utils/token";
 
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
-/**
- * Fetch the BFS semester plan for the given major.
- * Requires a valid JWT in localStorage.
- */
+// Fetch the BFS semester plan for the given major.
 export async function getPlan(major) {
   const token = getToken();
   const res = await fetch(`${BASE_URL}/api/planner/${major}`, {

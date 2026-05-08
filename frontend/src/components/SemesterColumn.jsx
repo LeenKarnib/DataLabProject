@@ -1,5 +1,3 @@
-// client/src/components/SemesterColumn.jsx
-
 import React from "react";
 
 const DEPARTMENT_COLORS = {

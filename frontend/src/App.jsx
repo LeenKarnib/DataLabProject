@@ -10,17 +10,16 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PriorityDashboard from './pages/PriorityDashboard';
 
 function App() {
-  // Read token once on mount via useState initializer
   const [token, setToken] = useState(() => localStorage.getItem("token"));
 
   const handleLogin = (newToken) => {
-    setToken(newToken); // re-renders App → Navigate kicks in
+    setToken(newToken); 
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("major");
-    setToken(null); // re-renders App → Navigate to /login
+    setToken(null); 
   };
 
   return (

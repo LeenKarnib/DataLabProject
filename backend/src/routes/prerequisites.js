@@ -7,7 +7,6 @@ const db = require('../../db');
 const Graph = require("../datastructures/Graph");
 const checkPrerequisitesDFS = require("../algorithms/dfs");
 
-// POST /api/prerequisites/check
 router.post("/check", async (req, res) => {
     try {
         const { userId, courseCode } = req.body;
@@ -52,7 +51,6 @@ router.post("/check", async (req, res) => {
     }
 });
 
-// GET /api/prerequisites/graph
 router.get("/graph", async (req, res) => {
     try {
         const [prereqRows] = await db.query(

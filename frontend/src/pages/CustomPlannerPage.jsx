@@ -1,8 +1,3 @@
-// client/src/pages/CustomPlannerPage.jsx
-// Drag-and-drop semester planner.
-// Uses @dnd-kit/core for drag and drop.
-// Install: npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
-
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   DndContext,
@@ -18,7 +13,6 @@ import { fetchCustomPlan, saveCustomPlan, resetCustomPlan } from "../api/customP
 import { validateDrop, SCHEDULE } from "../utils/validateDrop";
 import InvalidDropModal from "../components/InvalidDropModal";
 
-// ─── Department colors (matches SemesterColumn) ────────────────────────────
 const DEPT_COLORS = {
   COE:  { bg: "#e8f5ee", text: "#1a6b3c", border: "#a8d5b5" },
   ELE:  { bg: "#e8f0fb", text: "#1a3a7a", border: "#a8bfef" },
@@ -44,7 +38,6 @@ function isSummer(label) {
   return label?.toLowerCase().includes("summer");
 }
 
-// ─── Draggable course card ─────────────────────────────────────────────────
 function CourseCard({ course, isDragging, isOverlay }) {
   const style = getDeptStyle(course.code, course.department);
 
@@ -83,7 +76,6 @@ function CourseCard({ course, isDragging, isOverlay }) {
   );
 }
 
-// ─── Draggable wrapper ─────────────────────────────────────────────────────
 function DraggableCourse({ course, activeId }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: course.code,
@@ -97,7 +89,6 @@ function DraggableCourse({ course, activeId }) {
   );
 }
 
-// ─── Droppable semester column ─────────────────────────────────────────────
 function SemesterColumn({ label, courses, isOver, totalCredits, slotMax }) {
   const summer = isSummer(label);
   const headerBg = summer ? "#b8860b" : "#1a6b3c";
@@ -208,7 +199,7 @@ function DroppablePool({ courses }) {
   );
 }
 
-// ─── Main page ─────────────────────────────────────────────────────────────
+// main page
 export default function CustomPlannerPage() {
   const major = localStorage.getItem("major") || "COE";
 
@@ -227,7 +218,7 @@ export default function CustomPlannerPage() {
 
   const [modal, setModal] = useState(null); // { course, targetLabel, reasons }
 
-  // ── Load plan ──────────────────────────────────────────────────────────
+
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -251,7 +242,6 @@ export default function CustomPlannerPage() {
     return () => { cancelled = true; };
   }, [major]);
 
-  // ── Save plan ──────────────────────────────────────────────────────────
   const handleSave = useCallback(async () => {
     setSaving(true);
     try {
@@ -271,7 +261,7 @@ export default function CustomPlannerPage() {
     }
   }, [semesters, major]);
 
-  // ── Reset plan ─────────────────────────────────────────────────────────
+
   const handleReset = useCallback(async () => {
     if (!window.confirm("Reset your entire custom plan? This cannot be undone.")) return;
     try {
@@ -285,7 +275,6 @@ export default function CustomPlannerPage() {
     }
   }, [major]);
 
-  // ── DnD sensors ───────────────────────────────────────────────────────
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
@@ -326,7 +315,7 @@ export default function CustomPlannerPage() {
 
     if (!course || sourceContainer === targetLabel) return;
 
-    // ── Validate if dropping into a semester ──────────────────────────
+    //  Validate if dropping into a semester
     if (targetLabel !== "UNSCHEDULED") {
       const { valid, reasons } = validateDrop(course, targetLabel, semesters, prereqMap);
       if (!valid) {
@@ -335,7 +324,7 @@ export default function CustomPlannerPage() {
       }
     }
 
-    // ── Move the course ───────────────────────────────────────────────
+    // Move the course 
     setSemesters((prev) => {
       const next = {};
       for (const [label, courses] of Object.entries(prev)) {
@@ -354,14 +343,13 @@ export default function CustomPlannerPage() {
     });
   }
 
-  // ── Stats ──────────────────────────────────────────────────────────
+  
   const totalScheduled = Object.values(semesters).flat().length;
   const totalAll = totalScheduled + unscheduled.length;
   const scheduledCredits = Object.values(semesters)
     .flat()
     .reduce((s, c) => s + (c.credits || 3), 0);
 
-  // ── Render ─────────────────────────────────────────────────────────
   if (loading) return <LoadingState />;
   if (error) return <ErrorState message={error} onRetry={() => window.location.reload()} />;
 
@@ -494,7 +482,6 @@ export default function CustomPlannerPage() {
   );
 }
 
-// ── Sub-components ──────────────────────────────────────────────────────────
 
 function Stat({ label, value }) {
   return (

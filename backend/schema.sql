@@ -1,17 +1,8 @@
--- ============================================================
--- DegreeMap — Clean Schema
--- Lebanese American University Beirut 2024-2025
--- Structure supports COE, ELE, MCE
--- Data seeded for COE only (ELE and MCE to be added later)
--- ============================================================
-
 DROP DATABASE IF EXISTS degreemap_db;
 CREATE DATABASE degreemap_db;
 USE degreemap_db;
 
--- ============================================================
--- TABLES
--- ============================================================
+-- tables 
 
 CREATE TABLE users (
   id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,9 +61,7 @@ CREATE TABLE IF NOT EXISTS user_plans (
   FOREIGN KEY (course_code) REFERENCES courses(code) ON DELETE CASCADE
 );
 
--- ============================================================
--- COURSES — ENGLISH & LAS
--- ============================================================
+-- english and las 
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
 -- ('ENG101',  'English I',                          3, 'ENG',  'both',   'required', 1),
 -- ('ENG102',  'English II',                         3, 'ENG',  'both',   'required', 1),
@@ -84,9 +73,7 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 ('LAS004',  'Liberal Arts & Sciences Elective 4', 3, 'LAS',  'fall',   'elective', 2),
 ('FREE001', 'Free Elective',                      3, 'FREE', 'summer',   'elective', 1);
 
--- ============================================================
--- COURSES — MATH & SCIENCE
--- ============================================================
+-- math and science
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
 ('MTH201', 'Calculus III',               3, 'MTH', 'fall',   'required', 1),
 ('MTH206', 'Calculus IV',                3, 'MTH', 'spring', 'required', 1),
@@ -95,9 +82,7 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 ('GNE331', 'Probability and Statistics', 3, 'GNE', 'both',   'required', 2),
 ('PHY201', 'Electricity and Magnetism',  3, 'PHY', 'fall',   'required', 1);
 
--- ============================================================
--- COURSES — GENERAL ENGINEERING
--- ============================================================
+-- general engineering
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
 ('COE201', 'Computer Proficiency',             1, 'COE', 'fall',   'required', 1),
 ('GNE212', 'Engineering Mechanics',            3, 'GNE', 'both',   'required', 1),
@@ -106,9 +91,7 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 ('GNE000', 'SOE Signature Course',             3, 'GNE', 'spring',   'required', 4),
 ('INE320', 'Engineering Economy',              3, 'INE', 'summer',   'required', 2);
 
--- ============================================================
--- COURSES — COE CORE
--- ============================================================
+-- coe
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
 ('COE211',  'Computer Programming',            3, 'COE', 'spring',   'required', 1),
 ('COE312',  'Data Structures',                 3, 'COE', 'fall',   'required', 2),
@@ -133,7 +116,7 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 ('COE595',  'Capstone Design Project I',       3, 'COE', 'fall',   'required', 4),
 ('COE596',  'Capstone Design Project II',      3, 'COE', 'spring', 'required', 4);
 
--- COE courses needed from ELE dept
+-- ele
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
 ('ELE300',  'Electric Circuits',               3, 'ELE', 'fall',   'required', 2),
 ('ELE303',  'Electrical Circuits Lab',         1, 'ELE', 'fall',   'lab',      2),
@@ -145,9 +128,7 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 ('ELE537',  'Communication Systems',           3, 'ELE', 'fall',   'required', 3),
 ('ELE540',  'Communication Systems Lab',       1, 'ELE', 'spring', 'lab',      3);
 
--- ============================================================
--- COURSES — COE TECHNICAL ELECTIVE PLACEHOLDERS
--- ============================================================
+-- technical electives 
 INSERT INTO courses (code, name, credits, department, offered_semesters, course_type, year_standing) VALUES
 ('COE_TE1', 'COE Technical Elective 1', 3, 'COE', 'both', 'elective', 3),
 ('COE_TE2', 'COE Technical Elective 2', 3, 'COE', 'spring', 'elective', 3),
@@ -155,10 +136,7 @@ INSERT INTO courses (code, name, credits, department, offered_semesters, course_
 ('COE_TE4', 'COE Technical Elective 4', 3, 'COE', 'spring', 'elective', 3),
 ('ECE_TE5', 'ECE Technical Elective 5', 3, 'COE', 'spring', 'elective', 4),
 ('ECE_TE6', 'ECE Technical Elective 6', 3, 'COE', 'spring', 'elective', 4);
--- ============================================================
--- MAJOR REQUIREMENTS — COE (150 credits)
--- core: 79  math_science: 18  other_eng: 14  las: 24  elective: 15
--- ============================================================
+-- major require
 INSERT INTO major_requirements (major, course_code, requirement_type) VALUES
 -- Core COE
 ('COE', 'COE211',  'core'),
@@ -222,9 +200,8 @@ INSERT INTO major_requirements (major, course_code, requirement_type) VALUES
 ('COE', 'COE_TE4', 'elective'),
 ('COE', 'ECE_TE5', 'elective'),
 ('COE', 'ECE_TE6', 'elective');
--- ============================================================
--- PREREQUISITES
--- ============================================================
+
+-- prerequisites
 
 -- English chain
 INSERT INTO prerequisites VALUES
@@ -276,16 +253,3 @@ INSERT INTO prerequisites VALUES
 ('ELE537',  'GNE331'),
 ('ELE540',  'ELE537');
 
-
--- ============================================================
--- VERIFY
--- ============================================================
-SELECT SUM(c.credits)
-FROM courses c JOIN major_requirements mr ON c.code = mr.course_code
-WHERE mr.major = 'COE';
--- Expected: 150
-
-SELECT mr.requirement_type, COUNT(*) as count, SUM(c.credits) as credits
-FROM courses c JOIN major_requirements mr ON c.code = mr.course_code
-WHERE mr.major = 'COE'
-GROUP BY mr.requirement_type;

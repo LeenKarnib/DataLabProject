@@ -177,7 +177,7 @@ function LogoIcon() {
   );
 }
 
-// ─── Login Form ──────────────────────────────────────────────────────────────
+// login form
 function LoginForm({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -200,8 +200,8 @@ function LoginForm({ onLogin }) {
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("major", data.user.major);
-        onLogin(data.token); // update App state → triggers re-render
-        navigate("/planner"); // React Router navigation, no hard reload
+        onLogin(data.token); 
+        navigate("/planner"); 
       } else {
         alert(data.message || "Login failed");
       }
@@ -256,7 +256,6 @@ function LoginForm({ onLogin }) {
   );
 }
 
-// ─── Register Form ───────────────────────────────────────────────────────────
 function RegisterForm({ onLogin }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -281,8 +280,8 @@ function RegisterForm({ onLogin }) {
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("major", data.user.major);
-        onLogin(data.token); // update App state → triggers re-render
-        navigate("/planner"); // React Router navigation, no hard reload
+        onLogin(data.token); 
+        navigate("/planner"); 
       } else {
         alert(data.message || "Registration failed");
       }
@@ -351,7 +350,6 @@ function RegisterForm({ onLogin }) {
   );
 }
 
-// ─── Main Page ───────────────────────────────────────────────────────────────
 export default function LoginPage({ onLogin }) {
   const [tab, setTab] = useState("login");
 

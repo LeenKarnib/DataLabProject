@@ -1,5 +1,3 @@
-// client/src/pages/PlannerPage.jsx
-
 import React from "react";
 import SemesterColumn from "../components/SemesterColumn";
 import { usePlanner } from "../hooks/usePlanner";
@@ -137,8 +135,6 @@ export default function PlannerPage() {
     </div>
   );
 }
-
-// --- Sub-components ---
 
 function Stat({ label, value }) {
   return (

@@ -1,14 +1,8 @@
-// client/src/pages/GraphPage.jsx
-// Prerequisite graph page for DegreeMap.
-// Calls GET /api/courses/major/:major/graph and GET /api/courses/completed/all
-// then renders the interactive React Flow visualization via PrereqGraph.
-
 import React, { useState, useEffect, useMemo } from "react";
 import PrereqGraph from "../components/PrereqGraph";
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
-// ─── Fetcher helpers ─────────────────────────────────────────────────────────
 function authHeaders() {
   const token = localStorage.getItem("token");
   return {
@@ -22,23 +16,22 @@ async function fetchGraph(major) {
     headers: authHeaders(),
   });
   if (!res.ok) throw new Error("Failed to load prerequisite graph");
-  return res.json(); // { courses: [...], edges: [{source, target}] }
+  return res.json(); 
 }
 
 async function fetchCompleted() {
   const res = await fetch(`${API}/api/courses/completed/all`, {
     headers: authHeaders(),
   });
-  if (!res.ok) return []; // not fatal — just show no completions
-  return res.json(); // string[]
+  if (!res.ok) return []; 
+  return res.json(); 
 }
 
-// ─── Filter options ──────────────────────────────────────────────────────────
 const DEPTS = ["ALL", "COE", "ELE", "MCE", "MTH", "PHY", "GNE", "INE", "ENG"];
 const YEARS = ["ALL", "1", "2", "3", "4", "5"];
 const REQ_TYPES = ["ALL", "core", "math_science", "other_eng", "elective", "las"];
 
-// ─── GraphPage ───────────────────────────────────────────────────────────────
+// GraphPage 
 export default function GraphPage() {
   const major = localStorage.getItem("major") || "COE";
 
@@ -115,13 +108,13 @@ export default function GraphPage() {
     };
   }, [graphData, filteredCourses, filteredEdges, completedSet]);
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+  
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "calc(100vh - 56px)", // subtract navbar height
+        height: "calc(100vh - 56px)", 
         background: "#0a0f0d",
         color: "#ccc",
         fontFamily: "'Courier New', Courier, monospace",
@@ -243,7 +236,6 @@ export default function GraphPage() {
   );
 }
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
 
 function Pill({ label, value, total, color }) {
   return (
