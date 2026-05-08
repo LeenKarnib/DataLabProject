@@ -6,7 +6,6 @@ import CatalogPage from './pages/CatalogPage';
 import PlannerPage from './pages/PlannerPage';
 import CustomPlannerPage from './pages/CustomPlannerPage';
 import GraphPage from './pages/GraphPage';
-import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PriorityDashboard from './pages/PriorityDashboard';
 
@@ -35,7 +34,6 @@ function App() {
         <Route path="/planner"        element={<ProtectedRoute token={token}><PlannerPage /></ProtectedRoute>} />
         <Route path="/planner/custom" element={<ProtectedRoute token={token}><CustomPlannerPage /></ProtectedRoute>} />
         <Route path="/graph"          element={<ProtectedRoute token={token}><GraphPage /></ProtectedRoute>} />
-        <Route path="/dashboard"      element={<ProtectedRoute token={token}><DashboardPage /></ProtectedRoute>} />
         <Route path="/priority-dashboard" element={<PriorityDashboard />} />
 
         <Route path="*" element={<Navigate to={token ? "/catalog" : "/login"} replace />} />
